@@ -7,12 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="securitydemo1" />
-        <module name="ch07-security" />
-        <module name="api_gateway" />
         <module name="service_acl" />
         <module name="spring_security" />
         <module name="service_base" />
+        <module name="SanGengTokenDemo" />
+        <module name="securitydemo1" />
+        <module name="ch07-security" />
+        <module name="api_gateway" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,6 +22,7 @@
       <module name="ch07-security" target="1.8" />
       <module name="common" target="1.8" />
       <module name="infrastructure" target="1.8" />
+      <module name="SanGengTokenDemo" target="1.8" />
       <module name="securitydemo1" target="1.8" />
       <module name="service" target="1.8" />
       <module name="service_acl" target="1.8" />
@@ -30,6 +32,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="SanGengTokenDemo" options="-parameters" />
       <module name="acl_parent" options="-parameters" />
       <module name="api_gateway" options="-parameters" />
       <module name="ch07-security" options="-parameters" />

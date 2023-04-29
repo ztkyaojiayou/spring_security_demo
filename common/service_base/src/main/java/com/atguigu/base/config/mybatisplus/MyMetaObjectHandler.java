@@ -1,4 +1,4 @@
-package com.atguigu.utils.handler;
+package com.atguigu.base.config.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * @author zoutongkun
+ */
 @Component
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override

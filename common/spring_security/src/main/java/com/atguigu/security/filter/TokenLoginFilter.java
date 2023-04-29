@@ -1,10 +1,10 @@
 package com.atguigu.security.filter;
 
 import com.atguigu.security.dto.LoginRequestDTO;
-import com.atguigu.security.dto.UserDTO;
+import com.atguigu.security.dto.LoginUser;
 import com.atguigu.security.security.TokenUtils;
-import com.atguigu.utils.utils.BaseResponse;
-import com.atguigu.utils.utils.ResponseUtil;
+import com.atguigu.base.utils.BaseResponse;
+import com.atguigu.base.utils.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -90,7 +90,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse response, FilterChain chain, Authentication authResult)
             throws IOException, ServletException {
         //此时认证成功，得到认证成功之后用户信息
-        UserDTO user = (UserDTO)authResult.getPrincipal();
+        LoginUser user = (LoginUser)authResult.getPrincipal();
         //根据用户名生成token
         String token = tokenUtils.createToken(user.getUsername());
         //把用户名称和用户权限列表放到redis

@@ -1,7 +1,7 @@
 package com.atguigu.security.security;
 
-import com.atguigu.utils.utils.BaseResponse;
-import com.atguigu.utils.utils.ResponseUtil;
+import com.atguigu.base.utils.BaseResponse;
+import com.atguigu.base.utils.ResponseUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;

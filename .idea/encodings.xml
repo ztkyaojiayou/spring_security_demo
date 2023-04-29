@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/../../../../../../三更草堂系列/springsecurity/源码/SanGeng_Security_Project/SanGengTokenDemo/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../../../../../../三更草堂系列/springsecurity/源码/SanGeng_Security_Project/SanGengTokenDemo/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../csrf案例/csrf-security/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../web方案案例/securitydemo1/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/../../web方案案例/securitydemo1/src/main/resources" charset="UTF-8" />

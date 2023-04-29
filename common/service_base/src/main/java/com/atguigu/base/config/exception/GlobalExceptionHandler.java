@@ -1,11 +1,15 @@
-package com.atguigu.utils.exceptionhandler;
+package com.atguigu.base.config.exception;
 
-import com.atguigu.utils.utils.BaseResponse;
+import com.atguigu.base.utils.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 全局异常处理器
+ * @author zoutongkun
+ */
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {

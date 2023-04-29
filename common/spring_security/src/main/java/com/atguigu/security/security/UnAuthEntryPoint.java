@@ -1,14 +1,12 @@
 package com.atguigu.security.security;
 
-import com.atguigu.utils.utils.BaseResponse;
-import com.atguigu.utils.utils.ResponseUtil;
+import com.atguigu.base.utils.BaseResponse;
+import com.atguigu.base.utils.ResponseUtil;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  * 未授权接口的统一处理类

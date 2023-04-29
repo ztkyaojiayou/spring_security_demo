@@ -19,63 +19,66 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 自定义授权处理器/过滤器
- * 继承BasicAuthenticationFilter类即可
+ * 自定义授权处理器/过滤器 继承BasicAuthenticationFilter类即可
+ *
  * @author zoutongkun
  */
 public class TokenAuthFilter extends BasicAuthenticationFilter {
 
-    private TokenUtils tokenUtils;
-    private RedisTemplate redisTemplate;
+  private TokenUtils tokenUtils;
+  private RedisTemplate redisTemplate;
 
-    public TokenAuthFilter(AuthenticationManager authenticationManager, TokenUtils tokenUtils, RedisTemplate redisTemplate) {
-        super(authenticationManager);
-        this.tokenUtils = tokenUtils;
-        this.redisTemplate = redisTemplate;
+  public TokenAuthFilter(
+      AuthenticationManager authenticationManager,
+      TokenUtils tokenUtils,
+      RedisTemplate redisTemplate) {
+    super(authenticationManager);
+    this.tokenUtils = tokenUtils;
+    this.redisTemplate = redisTemplate;
+  }
+
+  /**
+   * 授权过滤器 即当前登录成功的用户的权限加载到springSecurity中备用！！！
+   *
+   * @param request
+   * @param response
+   * @param chain
+   * @throws IOException
+   * @throws ServletException
+   */
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+      throws IOException, ServletException {
+    // 获取当前认证成功用户权限信息
+    UsernamePasswordAuthenticationToken authRequest = getAuthenticationInfo(request);
+    // 判断如果有权限信息，放到权限上下文中
+    if (authRequest != null) {
+      SecurityContextHolder.getContext().setAuthentication(authRequest);
     }
+    chain.doFilter(request, response);
+  }
 
-    /**
-     * 授权过滤器
-     * 即当前登录成功的用户的权限加载到springSecurity中备用！！！
-     * @param request
-     * @param response
-     * @param chain
-     * @throws IOException
-     * @throws ServletException
-     */
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //获取当前认证成功用户权限信息
-        UsernamePasswordAuthenticationToken authRequest = getAuthenticationInfo(request);
-        //判断如果有权限信息，放到权限上下文中
-        if(authRequest != null) {
-            SecurityContextHolder.getContext().setAuthentication(authRequest);
-        }
-        chain.doFilter(request,response);
+  /** 根据请求体获取当前用户的用户信息（用户名、token和权限列表） */
+  private UsernamePasswordAuthenticationToken getAuthenticationInfo(HttpServletRequest request) {
+    // 1.从请求的header获取token
+    String token = request.getHeader("token");
+    if (token != null) {
+      // 2.从token获取用户名
+      String username = tokenUtils.getUserInfoFromToken(token);
+      // 3.从redis获取对应权限列表
+      List<String> permissionValueList = (List<String>) redisTemplate.opsForValue().get(username);
+      // 4.封装权限列表到springSecurity中，需要使用GrantedAuthority类封装！！！
+      Collection<GrantedAuthority> authorities = new ArrayList<>();
+      for (String permissionValue : permissionValueList) {
+        // 具体封装使用子类：SimpleGrantedAuthority，一个该对象就封装一个具体权限（其实是包括角色和权限的，但我们最终传入的肯定都是角色下具体的权限啦！）
+        SimpleGrantedAuthority auth = new SimpleGrantedAuthority(permissionValue);
+        authorities.add(auth);
+      }
+      // 5.最后返回UsernamePasswordAuthenticationToken对象，也即当前用户的用户名，token（不再是密码啦！）和权限列表！！！
+      // 注意：这里也可以传入这个loginUser的！！!
+      return new UsernamePasswordAuthenticationToken(username, token, authorities);
     }
-
-    /**
-     * 根据请求体获取当前用户的用户信息（用户名、token和权限列表）
-     */
-    private UsernamePasswordAuthenticationToken getAuthenticationInfo(HttpServletRequest request) {
-        //从请求的header获取token
-        String token = request.getHeader("token");
-        if(token != null) {
-            //从token获取用户名
-            String username = tokenUtils.getUserInfoFromToken(token);
-            //从redis获取对应权限列表
-            List<String> permissionValueList = (List<String>)redisTemplate.opsForValue().get(username);
-            //封装权限列表到springSecurity中，需要使用GrantedAuthority类封装！！！
-            Collection<GrantedAuthority> authority = new ArrayList<>();
-            for(String permissionValue : permissionValueList) {
-                //具体封装使用子类：SimpleGrantedAuthority，一个该对象就封装一个具体权限（其实是包括角色和权限的，但我们最终传入的肯定都是角色下具体的权限啦！）
-                SimpleGrantedAuthority auth = new SimpleGrantedAuthority(permissionValue);
-                authority.add(auth);
-            }
-            //最后返回UsernamePasswordAuthenticationToken对象，也即当前用户的用户名，token（不再是密码啦！）和权限列表！！！
-            return new UsernamePasswordAuthenticationToken(username,token,authority);
-        }
-        return null;
-    }
-
+    return null;
+  }
 }

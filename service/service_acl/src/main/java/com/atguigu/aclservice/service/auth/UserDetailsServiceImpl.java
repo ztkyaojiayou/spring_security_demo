@@ -3,7 +3,7 @@ package com.atguigu.aclservice.service.auth;
 import com.atguigu.aclservice.entity.User;
 import com.atguigu.aclservice.service.PermissionService;
 import com.atguigu.aclservice.service.UserService;
-import com.atguigu.security.dto.UserDTO;
+import com.atguigu.security.dto.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +16,7 @@ import java.util.List;
  *
  * （核心）数据库中的账号密码校验逻辑！！！
  * 需要实现UserDetailsService接口！！！
+ * @author zoutongkun
  */
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -45,14 +46,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //根据用户查询用户权限列表
         List<String> permissionValueList = permissionService.getPermissionValueByUserId(curUserInfo.getId());
         //需要返回UserDetails类，而我们自定义的SecurityUser即实现了该类，于是返回该类即可！
-        UserDTO userDTO = new UserDTO();
+        LoginUser loginUser = new LoginUser();
         //当前用户的基本信息
-        userDTO.setUsername(curUserInfo.getUsername());
-        userDTO.setPassword(curUserInfo.getPassword());
-        userDTO.setNickName(curUserInfo.getNickName());
-        userDTO.setSalt(curUserInfo.getSalt());
+        loginUser.setUsername(curUserInfo.getUsername());
+        loginUser.setPassword(curUserInfo.getPassword());
+        loginUser.setNickName(curUserInfo.getNickName());
+        loginUser.setSalt(curUserInfo.getSalt());
         //当前用户的权限列表
-        userDTO.setPermissionList(permissionValueList);
-        return userDTO;
+        loginUser.setPermissionList(permissionValueList);
+        return loginUser;
     }
 }

@@ -20,9 +20,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 /**
  * 核心配置类，参考demo1中的注释
  * 主要用于查库比对！！！
+ * @author zoutongkun
  */
 @Configuration
 @EnableWebSecurity
+//需要先开启权限注解！！！
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class TokenWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
